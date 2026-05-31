@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMLA — Her Words. Her Minutes. You Decide.</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&family=Barlow+Condensed:wght@600;700;800&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --red: #da3633;
+    --red-dim: #6e1a18;
+    --green: #238636;
+    --green-bright: #3fb950;
+    --yellow: #d29922;
+    --yellow-bright: #e3b341;
+    --white: #f0f6fc;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--bg);
+    padding: 60px 28px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(218,54,51,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 10vw, 88px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+  .hero h1 em {
+    color: var(--red);
+    font-style: normal;
+  }
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 28px;
+    line-height: 1.7;
+  }
+  .hero-sub strong { color: var(--white); }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(218,54,51,0.15);
+    border: 1px solid var(--red-dim);
+    color: #ff7b7a;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 4px;
+  }
+
+  /* INTRO STATEMENT */
+  .intro {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 28px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .intro p {
+    font-size: 18px;
+    color: #c9d1d9;
+    line-height: 1.8;
+  }
+  .intro p strong { color: var(--white); }
+  .intro p em { color: var(--yellow-bright); font-style: normal; font-weight: 600; }
+
+  /* CLAIM BLOCKS */
+  .claims {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 20px 28px 60px;
+  }
+
+  .claim-block {
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .claim-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .claim-header:hover { background: #21262d; }
+
+  .claim-x {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .claim-x.partial { background: var(--yellow); color: #1c1c1c; }
+
+  .claim-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    flex: 1;
+  }
+  .claim-verdict {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .verdict-false { background: rgba(218,54,51,0.2); color: #ff7b7a; border: 1px solid var(--red-dim); }
+  .verdict-partial { background: rgba(210,153,34,0.2); color: var(--yellow-bright); border: 1px solid #5a3d00; }
+  .verdict-misleading { background: rgba(88,166,255,0.15); color: #79c0ff; border: 1px solid #1f4e8c; }
+
+  .claim-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .claim-block.open .claim-chevron { transform: rotate(180deg); }
+
+  .claim-body {
+    display: none;
+    padding: 0;
+  }
+  .claim-block.open .claim-body { display: block; }
+
+  /* HER CLAIM */
+  .her-claim {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(218,54,51,0.06);
+  }
+  .her-claim-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .her-claim-label::before { content: '🗣'; font-size: 12px; }
+  .her-claim p {
+    font-size: 15px;
+    color: #c9d1d9;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* THE RECORD */
+  .the-record {
+    padding: 20px 22px;
+  }
+  .record-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .record-label::before { content: '📄'; font-size: 12px; }
+
+  .record-point {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .record-point:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .record-source {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .record-quote {
+    background: var(--surface2);
+    border-left: 3px solid var(--green);
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #adbac7;
+    font-style: italic;
+    line-height: 1.7;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 6px;
+  }
+  .record-quote.contradiction {
+    border-left-color: var(--red);
+    background: rgba(218,54,51,0.08);
+    color: #ffb3b2;
+  }
+  .record-context {
+    font-size: 13px;
+    color: #8b949e;
+    line-height: 1.6;
+  }
+  .record-context strong { color: var(--yellow-bright); }
+
+  /* KEY CONTRADICTION BOX */
+  .contradiction-box {
+    background: rgba(218,54,51,0.1);
+    border: 1px solid var(--red-dim);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+  .contradiction-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .contradiction-text {
+    font-size: 14px;
+    color: #ffb3b2;
+    line-height: 1.7;
+  }
+  .contradiction-text strong { color: white; }
+
+  /* THE SMOKING GUN */
+  .smoking-gun {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--red);
+    border-radius: 10px;
+    padding: 32px 28px;
+    margin: 12px 0 32px;
+  }
+  .sg-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .sg-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.05;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+  .sg-title em { color: var(--red); font-style: normal; }
+
+  .quote-vs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: start;
+    margin: 20px 0;
+  }
+  .quote-box {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .quote-box.then { border-top: 3px solid var(--green); }
+  .quote-box.now { border-top: 3px solid var(--red); }
+  .quote-box-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .then .quote-box-label { color: var(--green-bright); }
+  .now .quote-box-label { color: var(--red); }
+  .quote-box-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.5px;
+  }
+  .quote-box-text {
+    font-size: 13px;
+    color: #c9d1d9;
+    font-style: italic;
+    line-height: 1.65;
+  }
+  .vs-divider {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--red);
+    align-self: center;
+    text-align: center;
+  }
+
+  .sg-question {
+    font-size: 17px;
+    color: var(--white);
+    font-weight: 600;
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+    margin-top: 4px;
+  }
+  .sg-question em { color: var(--yellow-bright); font-style: normal; }
+
+  /* BOTTOM STATS */
+  .bottom-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .stat-item {
+    background: var(--surface);
+    padding: 22px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* CTA */
+  .cta-box {
+    background: var(--red);
+    border-radius: 10px;
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .cta-box h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .cta-box p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    padding: 24px 28px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .doc-footer strong { color: #8b949e; }
+
+  /* OPEN ALL */
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .ctrl-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .ctrl-btn:hover { background: #21262d; color: var(--white); border-color: #484f58; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 44px 20px 36px; }
+    .claims { padding: 16px 16px 48px; }
+    .intro { padding: 32px 20px; }
+    .quote-vs { grid-template-columns: 1fr; }
+    .vs-divider { display: none; }
+    .bottom-stats { grid-template-columns: 1fr; }
+    .smoking-gun { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Setting the Record Straight · BMLA · June 2026</div>
+  <h1>Her Words.<br><em>Her Minutes.</em><br>You Decide.</h1>
+  <div class="hero-sub">
+    The Board President posted a "fact check." <strong>We checked her fact check</strong> — using nothing but her own board's official meeting minutes and public records.
+  </div>
+  <div class="hero-tag">Every Source Below Is a BMLA Official Document</div>
+</div>
+
+<!-- INTRO -->
+<div class="intro">
+  <p>
+    Erin Connelly called the residents' flyer <em>"a flyer full of lies."</em>
+    Below is a claim-by-claim review of her response —
+    <strong>using only documents her own board produced, signed, and published.</strong>
+    Read every source. Draw your own conclusions.
+  </p>
+</div>
+
+<div class="claims">
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="ctrl-btn" onclick="toggleAll(true)">Expand All</button>
+    <button class="ctrl-btn" onclick="toggleAll(false)">Collapse All</button>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 1: FINANCIAL LOSSES
+  ══════════════════════════════════ -->
+  <div class="claim-block open" id="c1">
+    <div class="claim-header" onclick="toggle('c1')">
+      <div class="claim-x partial">~</div>
+      <div class="claim-label">Her Claim: "Losses Are $330K + $130K — Not $1M+"</div>
+      <div class="claim-verdict verdict-partial">Partially Valid</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"The real financial story: $330K loss in 2024. $130K projected in 2025. With only a 4% dues increase. That is a dramatic turnaround. The flyer says $1M+. Someone added the two years together and then doubled it. I joined mid-year July 2024. The 2025 audit isn't complete."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What the Official Record Shows</div>
+        <div class="record-point">
+          <div class="record-source">April 29, 2026 — BMLA Public Session Minutes (Official)</div>
+          <div class="record-quote contradiction">"The association has experienced a $300,000 loss in 2024 and a $600,000+ loss in 2025."</div>
+          <div class="record-context">This was stated by <strong>her own board</strong> at her own public meeting — six weeks before her Facebook post. The 2024 figure alone differs from what she now claims ($300K vs $330K is minor). But the 2025 figure is dramatically different: <strong>her board said $600,000+ — she now says $130K projected.</strong></div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">Her Own Admission</div>
+          <div class="record-quote">"The 2025 audit isn't complete."</div>
+          <div class="record-context">She presents $130K as "the real number" while simultaneously admitting the audit that would confirm the real number is not finished. <strong>A projected figure is not a final figure.</strong> The board cannot claim the losses are overstated while also admitting the books aren't closed.</div>
+        </div>
+        <div class="contradiction-box">
+          <div class="contradiction-title">⚡ The Core Contradiction</div>
+          <div class="contradiction-text">Her own board publicly stated <strong>$600,000+ in 2025 losses</strong> at the April 29 meeting. She now says <strong>$130K projected.</strong> Which number should residents trust — and why did her board announce a number six weeks ago that she is now calling false?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 2: SECURITY
+  ══════════════════════════════════ -->
+  <div class="claim-block" id="c2">
+    <div class="claim-header" onclick="toggle('c2')">
+      <div class="claim-x partial">~</div>
+      <div class="claim-label">Her Claim: "Security Was a False Sense of Security"</div>
+      <div class="claim-verdict verdict-misleading">Misleading</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"We were paying $250,000/year for someone who gave this community a false sense of security — while being contractually unable to stop, detain, or act on a single person who drove past. The board ended it and redirected that money toward real measures. The board member now supporting this claim voted for that decision."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What the Official Record Shows</div>
+        <div class="record-point">
+          <div class="record-source">April 1, 2026 — BMLA Public Session Minutes</div>
+          <div class="record-quote">"The prior security contract cost approximately $250,000 annually and provided limited effectiveness (no enforcement capability or patrol)."</div>
+          <div class="record-context">On this specific point — the old contract's limitations — <strong>she is correct.</strong> The board's own minutes confirm the old contract had limited enforcement ability. This is a fair defense of the decision to end it.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">April 29, 2026 — BMLA Public Session Minutes</div>
+          <div class="record-quote contradiction">"In-house security model under development... Will not include 24/7 patrol due to budget constraints... Full plan pending board review."</div>
+          <div class="record-context">The contract ended <strong>March 1, 2026.</strong> As of the April 29 meeting — nearly 60 days later — there was still no plan. As of June 2, <strong>that is over 90 days with no security of any kind.</strong> She defends ending the old contract but does not address the 90-day gap that followed.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">February 25, 2026 — BMLA Public Session Minutes</div>
+          <div class="record-quote contradiction">"The proposed budget for a new security plan is $45,250."</div>
+          <div class="record-context">She says the money was "redirected toward real measures." The official record shows it was redirected to a <strong>$45,250 budget with no implemented plan</strong> — one-fifth of what was previously spent, still unspent, still uncommitted as of the June 2 meeting.</div>
+        </div>
+        <div class="contradiction-box">
+          <div class="contradiction-title">⚡ The Question She Doesn't Answer</div>
+          <div class="contradiction-text">Calling the old contract worthless is a <strong>defense of the past.</strong> It doesn't answer what residents are supposed to do right now — 90+ days into summer with no security presence of any kind. <strong>What are the "real measures" and where are they?</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 3: AG COMPLAINTS
+  ══════════════════════════════════ -->
+  <div class="claim-block" id="c3">
+    <div class="claim-header" onclick="toggle('c3')">
+      <div class="claim-x">✗</div>
+      <div class="claim-label">Her Claim: "Zero Complaints Have Been Upheld"</div>
+      <div class="claim-verdict verdict-misleading">Unverifiable</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"Zero complaints filed against this board have been upheld by the Attorney General, the Bureau of Consumer Protection, or any legal authority. Not one. Every single one was reviewed, responded to, and rejected."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What the Official Record Shows</div>
+        <div class="record-point">
+          <div class="record-source">Pennsylvania Attorney General — Public Records</div>
+          <div class="record-quote contradiction">There is no public database of HOA complaint outcomes maintained by the PA Attorney General's office. This claim cannot be independently verified by any resident.</div>
+          <div class="record-context">She is asking you to accept an <strong>unverifiable claim as definitive fact.</strong> Residents have no way to confirm whether complaints were filed, how many, or what the outcomes were without a formal records request.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">Why This Misses the Point</div>
+          <div class="record-quote">Filing a complaint creates an official paper trail, puts the board on notice, and documents the dispute — regardless of whether a formal finding is issued.</div>
+          <div class="record-context">Most HOA complaints do not result in formal "upheld" findings — that is not how the process works. The AG's role is to receive complaints, investigate, and respond. <strong>"Rejected" and "reviewed and responded to" are not the same thing.</strong> Residents have the right to file complaints and should.</div>
+        </div>
+        <div class="contradiction-box">
+          <div class="contradiction-title">⚡ Ask Yourself</div>
+          <div class="contradiction-text">She is asking you to trust a claim about confidential government complaint records that <strong>no resident can verify.</strong> The appropriate response is: provide documentation, or residents will continue to exercise their legal right to file.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 4: QHV DELINQUENCY
+  ══════════════════════════════════ -->
+  <div class="claim-block" id="c4">
+    <div class="claim-header" onclick="toggle('c4')">
+      <div class="claim-x partial">~</div>
+      <div class="claim-label">Her Claim: "QHV Delinquency Started in 2014 — I Wasn't on the Board"</div>
+      <div class="claim-verdict verdict-partial">Incomplete</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"That started in 2014. I wasn't on this board until 2017. Every board before me failed to address it. I was the only one who could sit across the table from QHV and make them pay late fees. Seven months of negotiating."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What the Official Record Shows</div>
+        <div class="record-point">
+          <div class="record-source">February 25, 2026 — BMLA Public Session Minutes</div>
+          <div class="record-quote">"A legally binding agreement was enacted December 23rd, 2014 and began in 2015. This agreement reduced Quail Hollow's assessment obligations. The agreement has remained in effect for 11 years."</div>
+          <div class="record-context">She is correct that she did not create the 2014 agreement. <strong>That is a fair point.</strong> However she joined the board in 2017 — meaning she has served during <strong>9 of the 11 years</strong> this agreement has been in effect.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">February 25, 2026 — BMLA Public Session Minutes (2024 Audit)</div>
+          <div class="record-quote contradiction">"Quail Hollow was billed: $157,500. Quail Hollow collected: $48,862.50. Write-off (uncollectible): $108,637.50."</div>
+          <div class="record-context">In the same year she claims to have negotiated seven months to make QH pay late fees, <strong>$108,637.50 was written off as uncollectible.</strong> Getting late fees while $108K is written off annually is not a resolution — it is continuation of the same problem.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">April 29, 2026 — BMLA Public Session Minutes</div>
+          <div class="record-quote contradiction">"In exchange for voting affirmatively on the covenant extension, Quail Hollow requested that the new covenants be written with one-to-one billing instead of the current one-to-four billing formula. Yes, there was a special agreement in 2025."</div>
+          <div class="record-context">Rather than resolving the QH delinquency, the 2025 agreement she approved <strong>reduced QH's billing obligations further</strong> — in exchange for their votes. Quail Hollow's 2025 payment dropped from $157,500 to $55,000 under this new arrangement.</div>
+        </div>
+        <div class="contradiction-box">
+          <div class="contradiction-title">⚡ The Math</div>
+          <div class="contradiction-text">She says she's been fighting for homeowners on the QH issue for seven months. The official record shows QH wrote off <strong>$108,637 in 2024 alone</strong> and paid <strong>$102,500 less in 2025</strong> under a new agreement she approved. Every BMLA homeowner absorbs that difference in their dues.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 5: SECRET AGREEMENT
+       THIS IS THE SMOKING GUN
+  ══════════════════════════════════ -->
+  <div class="claim-block open" id="c5">
+    <div class="claim-header" onclick="toggle('c5')">
+      <div class="claim-x">✗</div>
+      <div class="claim-label">Her Claim: "Secret QHV Agreement — Not Secret. Never Secret."</div>
+      <div class="claim-verdict verdict-false">Directly Contradicted</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"Not secret. Never secret. Available to any member upon request since the day it was signed. They chose that word to frighten you — it was never true. The Association's attorney confirmed it is entirely legitimate. Zero complaints about it have been upheld by any legal authority."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What the Official Record Shows</div>
+
+        <!-- THE SMOKING GUN -->
+        <div class="smoking-gun">
+          <div class="sg-eyebrow">📋 Direct Contradiction — Same Board. Same Year.</div>
+          <div class="sg-title">She Said <em>Never Secret.</em><br>Her Board Said <em>Can't Be Shared.</em></div>
+
+          <div class="quote-vs">
+            <div class="quote-box then">
+              <div class="quote-box-label">Then — Official Board Minutes</div>
+              <div class="quote-box-date">February 25, 2026 — BMLA Public Session Minutes</div>
+              <div class="quote-box-text">"The 2014 agreement is a binding agreement... The agreement contains specific disclosure terms that restrict sharing. Even if both boards agreed to release it, a secondary clause in the agreement restricts disclosure."</div>
+            </div>
+            <div class="vs-divider">VS</div>
+            <div class="quote-box now">
+              <div class="quote-box-label">Now — Her Facebook Post</div>
+              <div class="quote-box-date">June 2026 — Erin Connelly, Facebook</div>
+              <div class="quote-box-text">"Not secret. Never secret. Available to any member upon request since the day it was signed."</div>
+            </div>
+          </div>
+
+          <div class="sg-question">
+            At the February 25 board meeting — <em>four months ago</em> — her own board stated on the official record that the 2014 agreement "contains specific disclosure terms that restrict sharing" and that "a secondary clause restricts disclosure."<br><br>
+            She now says it was <em>"never secret"</em> and has been available since day one.<br><br>
+            <strong>Both statements cannot be true. One of them was said under oath at a public board meeting. The other was posted on Facebook.</strong>
+          </div>
+        </div>
+
+        <div class="record-point">
+          <div class="record-source">Additionally — Her Own GM's Email, May 29, 2026</div>
+          <div class="record-quote contradiction">When a resident simply replied to the board's own mass email asking to see the 2025 QH Agreement — which the board said was "available upon request" — GM Laura Jones responded requiring a formal written request with a "proper purpose" statement under PA nonprofit law.</div>
+          <div class="record-context">If the agreement is freely available to any member upon request as she claims, <strong>why did the GM respond with legal requirements when a resident asked for it?</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CLAIM 6: THE 88 MINUTES
+  ══════════════════════════════════ -->
+  <div class="claim-block" id="c6">
+    <div class="claim-header" onclick="toggle('c6')">
+      <div class="claim-x partial">!</div>
+      <div class="claim-label">Her Post: "The 88-Minute Question"</div>
+      <div class="claim-verdict verdict-misleading">New Information</div>
+      <div class="claim-chevron">▼</div>
+    </div>
+    <div class="claim-body">
+      <div class="her-claim">
+        <div class="her-claim-label">What She Said</div>
+        <p>"At 11:08 AM I notified the board I would be completely unavailable the week of June 1st — supporting 3 shifts in a medical device clean room. 88 minutes later, at 12:36 PM, the removal meeting was scheduled for June 2nd. Same day. Make your own conclusions."</p>
+      </div>
+      <div class="the-record">
+        <div class="record-label">What This Tells Residents</div>
+        <div class="record-point">
+          <div class="record-source">What This Means</div>
+          <div class="record-quote">There is an active effort underway to remove Erin Connelly from the Board of Directors. A removal meeting has been formally scheduled.</div>
+          <div class="record-context">This is significant new information for residents. <strong>The board is in active internal conflict.</strong> Whether or not the timing was retaliatory, the removal process is a legitimate governance mechanism under the Association's governing documents. This does not address any of the financial or service concerns raised by residents — but it does signal that change may be coming.</div>
+        </div>
+        <div class="record-point">
+          <div class="record-source">What This Does NOT Address</div>
+          <div class="record-quote contradiction">Internal board politics is not a rebuttal of resident concerns about security, finances, or the Quail Hollow agreement.</div>
+          <div class="record-context">Regardless of who is on the board or what internal disputes exist: <strong>residents still have no security, the restaurant is still closed, Q1 financials have still not been shared, and the QH agreement has still not been provided.</strong> Those facts are independent of who is winning or losing internal board battles.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM STATS -->
+  <div class="bottom-stats">
+    <div class="stat-item">
+      <div class="stat-num">90+</div>
+      <div class="stat-label">Days with zero security — no plan in place</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$108K</div>
+      <div class="stat-label">Written off from Quail Hollow in 2024 alone</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Direct contradiction between her post and her own board minutes</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>THE DOCUMENTS ARE PUBLIC. READ THEM YOURSELF.</h3>
+    <p>Everything in this response comes from BMLA's own meeting minutes, budgets, and official communications — all available at bmla.us. Don't take our word for it. Don't take her word for it. Read the source documents and decide.</p>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  <strong>Sources Used:</strong> February 25, 2026 Public Session Minutes · April 1, 2026 Public Session Minutes · April 29, 2026 Public Session Minutes · 2026 BMLA Budget Document · BMLA GM Email May 29, 2026 · BMLA Board Mass Email May 29, 2026<br><br>
+  Prepared by concerned BMLA property owners · June 2026 · Not an official BMLA publication · All quotes reproduced from official BMLA records
+</div>
+
+<script>
+  function toggle(id) {
+    const block = document.getElementById(id);
+    block.classList.toggle('open');
+  }
+  function toggleAll(open) {
+    document.querySelectorAll('.claim-block').forEach(b => {
+      if (open) b.classList.add('open');
+      else b.classList.remove('open');
+    });
+  }
+</script>
+
+</body>
+</html>
